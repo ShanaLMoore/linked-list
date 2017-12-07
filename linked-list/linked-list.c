@@ -23,15 +23,19 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
+// declare struct
 typedef struct node_s {
-    char model;
+    char model[10];
     double price;
     double miles;
     struct node_s *next;
 } node_t;
 
-void traverse(node_t *head_p);
+// prototype functions
+void print_list(node_t *head_p);
+void print_stats(node_t *head_p);
 
 int main(void) {
     // declare variables with appropriate data type
@@ -62,18 +66,38 @@ int main(void) {
     car1_p->next = car2_p;
     car2_p->next = car3_p;
     car3_p->next = car4_p;
-    car4_p->next->next = NULL;
+    car4_p->next = NULL;
     
-    traverse(node_t *car1_p);
+    // output to screen
+    print_list(car1_p);
+    print_stats(car1_p);
     
     return 0;
 }
 
-void traverse(node_t *headp){
+void print_list(node_t *headp){
     if(headp == NULL){
         printf("\n");
     } else {
-        printf("Car:%s, Price:%lf, I drove it:%lf\n", headp->model, headp->price, headp->miles);
-        traverse(headp->next);
+        printf("Car: %s, Price: %.2lf, I drove it: %.0lf\n", headp->model, headp->price, headp->miles);
+        print_list(headp->next);
     }
+}
+
+void print_stats(node_t *headp){
+    int total_miles = 0;
+    double avg_price = 0;
+    
+    if(headp == NULL){
+        printf("\n");
+    }
+    
+    while (headp != NULL){
+        total_miles += headp->miles;
+        avg_price += headp->price;
+        headp = headp->next;
+    }
+    
+    avg_price = avg_price / 4;
+    printf("The Total Miles: %.0d\nThe average price was: %.2lf\n", total_miles, avg_price);
 }
